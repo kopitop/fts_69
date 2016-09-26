@@ -6,10 +6,12 @@ return [
     'action' => [
         'add_user' => 'add a new user',
         'detail_user' => 'detail of user',
+        'edit_user' => 'edit a user',
     ],
     'panel' => [
         'panel_head_add' => 'Add a new user',
         'panel_head_detail' => 'User detail',
+        'panel_head_edit' => 'Edit user',
     ],
     'label_form' => [
         'label_name_user' => 'Full Name',
@@ -17,6 +19,7 @@ return [
         'label_email_user' => 'E-mail address',
         'label_password_user' => 'Password',
         'label_avatar_user' => 'Avatar',
+        'label_new_avatar_user' => 'New avatar',
         'label_help_block_avatar' => 'Please upload avatar of user',
     ],
     'place_holder' => [

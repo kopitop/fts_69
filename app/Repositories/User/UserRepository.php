@@ -17,16 +17,16 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->model = $user;
     }
 
-    public function upload($fileName)
+    public function upload($file)
     {
         try {
-            if (!is_null($fileName)) {
-                $avatarName = uniqid() . '.' . $fileName->getClientOriginalExtension();
+            if (!is_null($file)) {
+                $avatarName = uniqid() . '.' . $file->getClientOriginalExtension();
                 $path = public_path() . config('common.user.avatar_url');
                 $pathAvatar = $path . $avatarName;
 
                 if (!File::exists($pathAvatar)) {
-                    $fileName->move($path, $avatarName);
+                    $file->move($path, $avatarName);
                 }
 
                 return $avatarName;
@@ -36,17 +36,17 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         }
     }
 
-    public function updateAvatar($oldPath, $fileName)
+    public function updateAvatar($oldPath, $file)
     {
         try {
             $imageSytemsPath = public_path() . config('common.path_image_system') .
                 config('common.user.avatar_name_default');
 
-            if (!File::exists($oldPath) && $oldPath != $imageSytemsPath) {
-                $fileName->delete($oldPath);
+            if (File::exists($oldPath) && $oldPath != $imageSytemsPath) {
+                unlink($oldPath);
             }
 
-            $this->upload($fileName);
+            return $this->upload($file);
         } catch (Exception $e) {
             throw new Exception(trans('messages.error.delete_file_error'));
         }
