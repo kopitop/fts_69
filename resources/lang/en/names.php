@@ -12,5 +12,8 @@ return [
     ],
     'button' => [
         'button_submit' => 'Submit',
+        'button_back' => 'Back',
+        'button_edit' => 'Edit',
+        'button_delete' => 'Delete',
     ],
 ];

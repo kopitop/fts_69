@@ -114,6 +114,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = $this->userRepository->find($id);
+        $message = $this->userRepository->destroy($user);
+        return redirect()->route('admin.user.index')->with('message', $message);
     }
 }

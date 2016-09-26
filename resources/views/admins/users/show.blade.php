@@ -29,7 +29,7 @@
                             {{ trans('admins/users/names.label_form.label_name_user') }} - {{ $user->name }}
                         </li>
                         <li>
-                            {{ trans('admins/users/names.label_form.label_name_chatwork_id') }} - {{ $user->chatwork_id }}
+                            {{ trans('admins/users/names.label_form.label_chatwork_id') }} - {{ $user->chatwork_id }}
                         </li>
                         <li>
                             {{ trans('admins/users/names.label_form.label_email_user') }} - {{ $user->email }}
@@ -39,6 +39,19 @@
             </div>
         </div>
         <!-- /.box-body -->
+        <div class="box-footer">
+            {{
+                Form::open([
+                    'route' => ['admin.user.destroy', $user->id],
+                    'method' => 'DELETE',
+                    'onsubmit' => 'return confirmDelete("' . trans('messages.confirm.confirm_delete', ['item' => 'user']) . '")'
+                ])
+            }}
+                <a href="{{ route('admin.user.edit', ['id' => $user->id]) }}" class="btn btn-warning">{{ trans('names.button.button_edit') }}</a>
+                <a href="{{ route('admin.user.index') }}" class="btn btn-primary">{{ trans('names.button.button_back') }}</a>
+                {{ Form::button(trans('names.button.button_delete'), ['type' => 'submit', 'class' => 'btn btn-danger']) }}
+            {{ Form::close() }}
+        </div>
     </div>
     <!-- /.box -->
 @endsection
