@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Http\Requests\Admin\UserCreateRequest;
+use App\Http\Requests\Admin\UserEditRequest;
 
 class UserController extends Controller
 {
@@ -78,19 +79,31 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = $this->userRepository->show($id);
+        return view('admins.users.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UserEditRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserEditRequest $request, $id)
     {
-        //
+        $user = $this->userRepository->find($id);
+        $input = $request->only('name', 'email', 'chatwork_id');
+
+        if ($request->hasFile('avatar_new')) {
+            $newAvatar = $request->avatar_new;
+            $oldFile = public_path() . config('common.user.avatar_url') . $user->avatar;
+            $input['avatar'] = $this->userRepository->updateAvatar($oldFile, $newAvatar);
+        }
+
+        $this->userRepository->update($input, $id);
+        $message = trans('messages.success.update_success', ['item' => 'user']);
+        return redirect()->route('admin.user.index')->with('message', $message);
     }
 
     /**
