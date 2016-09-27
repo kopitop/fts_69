@@ -70,7 +70,8 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-        //
+        $subject = $this->subjectRepository->show($id);
+        return view('admins.subjects.edit', compact('subject'));
     }
 
     /**
@@ -82,7 +83,10 @@ class SubjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = $request->only('name', 'duration', 'number_question');
+        $this->subjectRepository->update($input, $id);
+        $message = trans('messages.success.update_success', ['item' => 'subject']);
+        return redirect()->route('admin.subject.index')->with('message', $message);
     }
 
     /**
