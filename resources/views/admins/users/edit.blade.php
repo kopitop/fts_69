@@ -40,9 +40,7 @@
                 <div class="form-group">
                     {{ Form::label(trans('names.label.label_for', ['label_for' => 'avatar']),
                     trans('admins/users/names.label_form.label_avatar_user')) }}
-                    <img src="{{ asset(($user->avatar == config('common.user.avatar_name_default'))
-                            ? config('common.path_image_system') . config('common.user.avatar_name_default')
-                            : config('common.user.avatar_url') . $user->avatar) }}" class="avatar">
+                    <img src="{{ asset($user->avatar) }}" class="avatar">
                 </div>
                 <div class="form-group">
                     {{ Form::label(trans('names.label.label_for', ['label_for' => 'avatar_new']),
