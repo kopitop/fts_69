@@ -13,5 +13,9 @@ return [
         'avatar_url' => '/images/avatars/',
         'avatar_name_default' => 'default-avatar.png',
         'user_record_default' => 10,
-    ]
+    ],
+    'subject' => [
+        'max_length_name' => 20,
+        'subject_record_default' => 10,
+    ],
 ];

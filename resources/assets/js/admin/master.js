@@ -4,7 +4,7 @@ function confirmDelete(message) {
 }
 $(".message-infor").show().delay(3000).fadeOut();
 $(function () {
-    $('#user-lists').DataTable({
+    $('#user-lists, .question-lists, .exam-lists').DataTable({
         "paging": false,
         "lengthChange": false,
         "searching": false,
