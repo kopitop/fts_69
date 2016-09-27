@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Filter\SubjectFilters;
+use App\Models\Subject;
+use App\Repositories\Subject\SubjectRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Http\Requests\Admin\SubjectRequest;
-use App\Repositories\Subject\SubjectRepository;
 
 class SubjectController extends Controller
 {
@@ -22,9 +24,24 @@ class SubjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(SubjectFilters $filters)
     {
-        //
+        $record = config('common.subject.subject_record_default');
+        $sort = config('common.sort.descending');
+        $searchTypes = [
+            'name' => trans('admins/subjects/names.label_form.name_subject'),
+            'duration' => trans('admins/subjects/names.label_form.duration_subject'),
+            'numberQuestion' => trans('admins/subjects/names.label_form.question_number_subject'),
+        ];
+        $input = $filters->input();
+
+        foreach ($input as $key => $value) {
+            $searchType = $key;
+            $searchText = $value;
+        }
+
+        $subjects =  Subject::filter($filters)->orderBy('created_at', $sort)->paginate($record);
+        return view('admins.subjects.index', compact('subjects', 'searchTypes', 'searchType', 'searchText'));
     }
 
     /**
@@ -97,6 +114,7 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = $this->subjectRepository->delete($id);
+        return redirect()->route('admin.subject.index')->with('message', $message);
     }
 }
