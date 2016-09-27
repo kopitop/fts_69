@@ -5,6 +5,7 @@ use Illuminate\Support\ServiceProvider;
 use App;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Subject\SubjectRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -25,5 +26,6 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         App::bind(UserRepositoryInterface::class, UserRepository::class);
+        App::bind(SubjectRepository::class);
     }
 }

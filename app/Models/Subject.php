@@ -22,4 +22,9 @@ class Subject extends Model
         return $this->hasMany(Question::class);
     }
 
+    public function suggestions()
+    {
+        return $this->hasMany(Suggestion::class);
+    }
+
 }

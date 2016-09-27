@@ -15,6 +15,7 @@ return [
         'button_back' => 'Back',
         'button_edit' => 'Edit',
         'button_delete' => 'Delete',
+        'button_add' => 'Add',
     ],
     'paginations' => 'Showing :start to :finish of :numberOfRecords entry|Showing :start to :finish of :numberOfRecords entries',
     'placeholder_search' => 'Search...',
