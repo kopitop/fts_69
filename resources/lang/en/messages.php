@@ -12,5 +12,7 @@ return [
     ],
     'success' => [
         'create_success' => 'Create :item SUCCESS',
+        'update_success' => 'Update :item SUCCESS',
+        'delete_success' => 'Delete :item SUCCESS',
     ],
 ];

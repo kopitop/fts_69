@@ -8,6 +8,8 @@ use File;
 use Storage;
 use Exception;
 use App\Repositories\BaseRepository;
+use App\Models\Suggestion;
+use App\Models\SuggestionDetail;
 Use App\Repositories\User\UserRepositoryInterface;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
@@ -51,4 +53,41 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             throw new Exception(trans('messages.error.delete_file_error'));
         }
     }
+
+    public function deleteAvatar($fileName)
+    {
+        try {
+            if ($fileName != config('common.user.avatar_name_default')) {
+                $path = public_path() . config('common.user.avatar_url') . $fileName;
+
+                if (File::exists($path)) {
+                    unlink($path);
+                }
+            }
+        } catch (Exception $e) {
+            throw new Exception(trans('messages.error.delete_file_error'));
+        }
+    }
+
+    public function destroy($user)
+    {
+        try {
+            DB::beginTransaction();
+            $suggestions = Suggestion::where('user_id', $user->id)->pluck('id');
+            SuggestionDetail::whereIn('suggestion_id', $suggestions)->delete();
+            $user->suggestions()->delete();
+            $user->examStatuses()->delete();
+            $user->examResults()->delete();
+            $user->userQuestions()->delete();
+            $user->delete();
+            DB::commit();
+            $message = trans('messages.success.delete_success', ['item' => 'user']);
+        } catch (Exception $e) {
+            DB::rollBack();
+            $message = trans('messages.error.delete_error', ['item' => 'user']);
+        }
+
+        return $message;
+    }
+
 }

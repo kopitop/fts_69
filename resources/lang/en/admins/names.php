@@ -14,5 +14,6 @@ return [
         'label_admin_question_answer' => 'Question answer',
         'label_admin_exam' => 'Exam',
         'label_admin_suggestion' => 'Suggestion',
+        'label_delete' => '*Note: If you want delete this :item, let\'s click',
     ],
 ];

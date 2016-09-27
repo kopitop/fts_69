@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'path_image_system' => '/images/systems',
+    'path_image_system' => '/images/systems/',
     'user' => [
         'max_length_name' => 50,
         'max_length_password' => 60,

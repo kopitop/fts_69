@@ -15,7 +15,7 @@ return [
     ],
     'label_form' => [
         'label_name_user' => 'Full Name',
-        'label_name_chatwork_id' => 'ChatworkID',
+        'label_chatwork_id' => 'ChatworkID',
         'label_email_user' => 'E-mail address',
         'label_password_user' => 'Password',
         'label_avatar_user' => 'Avatar',
