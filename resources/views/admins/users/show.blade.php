@@ -19,9 +19,7 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-lg-1">
-                    <img src="{{ asset(($user->avatar == config('common.user.avatar_name_default'))
-                    ? config('common.path_image_system') . config('common.user.avatar_name_default')
-                    : config('common.user.avatar_url') . $user->avatar) }}" class="avatar">
+                    <img src="{{ asset($user->avatar) }}" class="avatar">
                 </div>
                 <div class="col-lg-9">
                     <ul>

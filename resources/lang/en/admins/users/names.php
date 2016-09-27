@@ -7,11 +7,13 @@ return [
         'add_user' => 'add a new user',
         'detail_user' => 'detail of user',
         'edit_user' => 'edit a user',
+        'list_user' => 'list all users',
     ],
     'panel' => [
         'panel_head_add' => 'Add a new user',
         'panel_head_detail' => 'User detail',
         'panel_head_edit' => 'Edit user',
+        'panel_head_list' => 'List all users',
     ],
     'label_form' => [
         'label_name_user' => 'Full Name',

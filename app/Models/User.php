@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\QueryFilter;
 
 class User extends Authenticatable
 {
@@ -51,6 +52,20 @@ class User extends Authenticatable
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function scopeFilter($query, QueryFilter $filters)
+    {
+        return $filters->apply($query);
+    }
+
+    public function getAvatarAttribute($value)
+    {
+        if (empty($value) || $value == config('common.user.avatar_name_default')) {
+            return config('common.path_image_system') . config('common.user.avatar_name_default');
+        }
+
+        return config('common.user.avatar_url') . $value;
     }
 
 }

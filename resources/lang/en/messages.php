@@ -15,4 +15,11 @@ return [
         'update_success' => 'Update :item SUCCESS',
         'delete_success' => 'Delete :item SUCCESS',
     ],
+    'confirm' => [
+        'confirm_delete' => 'Are you sure you want to delete this :item?',
+    ],
+    'infor' => [
+        'infor_name' => 'Information',
+        'not_found_lists' => 'Data :item not available in system. Please create data!'
+    ],
 ];

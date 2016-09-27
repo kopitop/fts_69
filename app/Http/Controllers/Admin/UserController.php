@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Http\Requests\Admin\UserCreateRequest;
 use App\Http\Requests\Admin\UserEditRequest;
+use App\Filter\UserFilters;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -23,9 +25,22 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(UserFilters $filters)
     {
+        $record = config('common.user.user_record_default');
+        $searchTypes = [
+            'name' => trans('admins/users/names.label_form.label_name_user'),
+            'email' => trans('admins/users/names.label_form.label_email_user'),
+            'chatworkId' => trans('admins/users/names.label_form.label_chatwork_id'),
+        ];
+        $input = $filters->input();
+        foreach ($input as $key => $value) {
+            $searchType = $key;
+            $searchText = $value;
+        }
 
+        $users =  User::filter($filters)->paginate($record);
+        return view('admins.users.index', compact('users', 'searchType', 'searchText', 'searchTypes'));
     }
 
     /**
