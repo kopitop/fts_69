@@ -39,8 +39,9 @@ class UserController extends Controller
             $searchText = $value;
         }
 
+        $route = "admin.user.index";
         $users =  User::filter($filters)->paginate($record);
-        return view('admins.users.index', compact('users', 'searchType', 'searchText', 'searchTypes'));
+        return view('admins.users.list', compact('users', 'searchType', 'searchText', 'searchTypes', 'route'));
     }
 
     /**
