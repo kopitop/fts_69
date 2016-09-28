@@ -22,4 +22,13 @@ return [
         'max_length_name' => 20,
         'subject_record_default' => 10,
     ],
+    'question' => [
+        'type_question' => [
+            'single_choice' => 1,
+            'multiple_choice' => 2,
+            'text' => 3,
+        ],
+        'max_length_content' => 255,
+        'question_record_default' => 20,
+    ],
 ];

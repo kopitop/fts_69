@@ -1,4 +1,4 @@
-{{ Form::open(['route' => 'admin.subject.index', 'method' => 'GET', 'class' => 'form-inline']) }}
+{{ Form::open(['route' => $route, 'method' => 'GET', 'class' => 'form-inline']) }}
     {{ Form::select(config('common.search_key.search_type_key'), $searchTypes,
     (isset($searchType) ? $searchType : null), ['class' => 'form-control']) }}
     <div class="input-group">
@@ -10,5 +10,5 @@
             </button>
         </span>
     </div>
-    <a href="{{ route('admin.subject.index') }}" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+    <a href="{{ route($route) }}" class="btn btn-default"><i class="fa fa-refresh"></i></a>
 {{ Form::close() }}

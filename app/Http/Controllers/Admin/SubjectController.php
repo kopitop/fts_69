@@ -40,8 +40,9 @@ class SubjectController extends Controller
             $searchText = $value;
         }
 
+        $route = "admin.subject.index";
         $subjects =  Subject::filter($filters)->orderBy('created_at', $sort)->paginate($record);
-        return view('admins.subjects.index', compact('subjects', 'searchTypes', 'searchType', 'searchText'));
+        return view('admins.subjects.index', compact('subjects', 'searchTypes', 'searchType', 'searchText', 'route'));
     }
 
     /**

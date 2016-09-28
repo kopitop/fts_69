@@ -19,6 +19,9 @@ return [
         'subject_question' => 'Subject',
         'type_question' => 'Type',
         'content_question' => 'Content',
+        'single_choice' => 'Single choice',
+        'multiple_choice' => 'Multiple choice',
+        'text' => 'Text',
     ],
     'placeholder' => [
         'subject_question' => 'Please choose subject of question',

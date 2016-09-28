@@ -27,4 +27,9 @@ class Question extends Model
         return $this->belongsTo(Subject::class);
     }
 
+    public function scopeFilter($query, QuestionFilters $filters)
+    {
+        return $filters->apply($query);
+    }
+
 }
