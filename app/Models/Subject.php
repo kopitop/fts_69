@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\QueryFilter;
 
 class Subject extends Model
 {
@@ -25,6 +26,11 @@ class Subject extends Model
     public function suggestions()
     {
         return $this->hasMany(Suggestion::class);
+    }
+
+    public function scopeFilter($query, QueryFilter $filters)
+    {
+        return $filters->apply($query);
     }
 
 }

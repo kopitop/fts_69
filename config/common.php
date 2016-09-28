@@ -6,6 +6,10 @@ return [
         'search_type_key' => 'search_type',
         'search_text_key' => 'search_text',
     ],
+    'sort' => [
+        'increasing' => 'asc',
+        'descending' => 'desc',
+    ],
     'user' => [
         'max_length_name' => 50,
         'max_length_password' => 60,
