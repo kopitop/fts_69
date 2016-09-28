@@ -6,6 +6,8 @@ use App;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\Subject\SubjectRepository;
+use App\Repositories\Question\QuestionRepository;
+use App\Repositories\Question\QuestionRepositoryInterFace;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -27,5 +29,6 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         App::bind(UserRepositoryInterface::class, UserRepository::class);
         App::bind(SubjectRepository::class);
+        App::bind(QuestionRepositoryInterFace::class, QuestionRepository::class);
     }
 }
