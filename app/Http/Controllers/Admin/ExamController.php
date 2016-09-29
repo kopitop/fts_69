@@ -10,6 +10,11 @@ use App\Http\Requests;
 class ExamController extends Controller
 {
 
+    public function __construct()
+    {
+        parent::__construct(config('common.menu.menu_exam'));
+    }
+
     /**
      * Display a listing of the resource.
      *

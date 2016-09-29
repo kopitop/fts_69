@@ -9,12 +9,10 @@ use App\Http\Requests;
 
 class QuestionAnswerController extends Controller
 {
-    protected $navName;
 
     public function __construct()
     {
-        $this->navName = config('common.menu.menu_question_answer');
-        parent::__construct($this->navName);
+        parent::__construct(config('common.menu.menu_question_answer'));
     }
 
     /**

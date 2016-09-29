@@ -17,6 +17,7 @@ class SubjectController extends Controller
     public function __construct(SubjectRepository $subjectRepository)
     {
         $this->subjectRepository = $subjectRepository;
+        parent::__construct(config('common.menu.menu_subject'));
     }
 
     /**

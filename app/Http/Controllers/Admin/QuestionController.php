@@ -18,6 +18,7 @@ class QuestionController extends Controller
     public function __construct(QuestionRepositoryInterFace $questionRepository)
     {
         $this->questionRepository = $questionRepository;
+        parent::__construct(config('common.menu.menu_question'));
     }
 
     /**

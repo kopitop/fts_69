@@ -24,7 +24,7 @@
                 @include('layout.search')
                 <hr>
                 @if ($subjects->count())
-                    <table id="subject-lists" class="table table-bordered table-hover" data-order = '[[3, "desc" ]]'>
+                    <table id="subject-lists" class="table table-bordered table-hover" data-order="[[3, 'desc']]">
                         <thead>
                         <tr>
                             <th>{{ trans('admins/subjects/names.label_form.name_subject') }}</th>

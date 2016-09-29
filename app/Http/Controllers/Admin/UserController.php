@@ -18,6 +18,7 @@ class UserController extends Controller
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
+        parent::__construct(config('common.menu.menu_user'));
     }
 
     /**
