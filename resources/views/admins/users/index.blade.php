@@ -24,7 +24,7 @@
                 @include('layout.search')
                 <hr>
                 @if ($users->count())
-                    <table id="user-lists" class="table table-bordered table-hover">
+                    <table id="user-lists" class="table table-bordered table-hover" data-order="[[4, 'desc']]">
                         <thead>
                         <tr>
                             <th>{{ trans('admins/users/names.label_form.label_name_user') }}</th>

@@ -43,7 +43,6 @@
         <![endif]-->
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
-        <!-- ./wrapper -->
         <div class="wrapper">
             <header class="main-header">
                 <!-- Logo -->
@@ -81,11 +80,11 @@
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
                                         <div class="pull-left">
-                                            <a href="#"
+                                            <a href="{{ route('admin.profile.index') }}"
                                                class="btn btn-default btn-flat">{{ trans('names.label.label_profile') }}</a>
                                         </div>
                                         <div class="pull-right">
-                                            <a href="#"
+                                            <a href="{{ route('logout') }}"
                                                class="btn btn-default btn-flat">{{ trans('names.label.label_sign_out') }}</a>
                                         </div>
                                     </li>
@@ -107,47 +106,49 @@
                         </div>
                         <div class="pull-left info">
                             <p>Admin</p>
-                            <a href="#"><i class="fa fa-circle text-success"></i> {{ trans('names.label.label_online') }}</a>
+                            <a href="{{ route('admin.profile.index') }}">
+                                <i class="fa fa-circle text-success"></i> {{ trans('names.label.label_online') }}
+                            </a>
                         </div>
                     </div>
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                         <li class="header">{{ trans('admins/names.label.label_admin_menu') }}</li>
-                        <li class="treeview">
-                            <a href="#">
+                        <li class="treeview{{ $navName === config('common.menu.menu_default') ? ' active' : '' }}">
+                            <a href="{{ route('admin.home.index') }}">
                                 <i class="fa fa-dashboard"></i> <span>{{ trans('names.label.label_home') }}</span>
                             </a>
                         </li>
-                        <li class="treeview">
-                            <a href="#">
+                        <li class="treeview{{ $navName === config('common.menu.menu_user') ? ' active' : '' }}">
+                            <a href="{{ route('admin.user.index') }}">
                                 <i class="fa fa-user"></i> <span>{{ trans('admins/names.label.label_admin_user') }}</span>
                             </a>
                         </li>
-                        <li class="treeview">
-                            <a href="#">
+                        <li class="treeview{{ $navName === config('common.menu.menu_subject') ? ' active' : '' }}">
+                            <a href="{{ route('admin.subject.index') }}">
                                 <i class="fa fa-book"></i> <span>{{ trans('admins/names.label.label_admin_subject') }}</span>
                             </a>
                         </li>
-                        <li class="treeview">
-                            <a href="#">
+                        <li class="treeview{{ $navName === config('common.menu.menu_question') ? ' active' : '' }}">
+                            <a href="{{ route('admin.question.index') }}">
                                 <i class="fa fa-question"></i>
                                 <span>{{ trans('admins/names.label.label_admin_question') }}</span>
                             </a>
                         </li>
-                        <li class="treeview">
-                            <a href="#">
+                        <li class="treeview{{ $navName === config('common.menu.menu_question_answer') ? ' active' : '' }}">
+                            <a href="{{ route('admin.question-answer.index') }}">
                                 <i class="fa fa-check-square-o"></i>
                                 <span>{{ trans('admins/names.label.label_admin_question_answer') }}</span>
                             </a>
                         </li>
-                        <li class="treeview">
-                            <a href="#">
+                        <li class="treeview{{ $navName === config('common.menu.menu_exam') ? ' active' : '' }}">
+                            <a href="{{ route('admin.exam.index') }}">
                                 <i class="fa fa-file-text-o"></i>
                                 <span>{{ trans('admins/names.label.label_admin_exam') }}</span>
                             </a>
                         </li>
-                        <li class="treeview">
-                            <a href="#">
+                        <li class="treeview{{ $navName === config('common.menu.menu_suggestion') ? ' active' : '' }}">
+                            <a href="{{ route('admin.suggestion.index') }}">
                                 <i class="fa fa-lightbulb-o"></i>
                                 <span>{{ trans('admins/names.label.label_admin_suggestion') }}</span>
                             </a>
@@ -179,6 +180,9 @@
         <script src="{{ asset("bower/jquery-ui/jquery-ui.min.js") }}"></script>
         <!-- Master javascript -->
         <script src="{{ asset("js/admin/master.js") }}"></script>
+        <!-- DataTables -->
+        <script src="{{ asset("bower/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}"></script>
+        <script src="{{ asset("bower/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
         <!-- Bootstrap 3.3.6 -->
         <script src="{{ asset("bower/bootstrap/dist/js/bootstrap.min.js") }}"></script>
         <!-- Morris.js charts -->

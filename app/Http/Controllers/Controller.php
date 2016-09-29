@@ -10,4 +10,16 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    /**
+     * Controller constructor.
+     *
+     * @param null $navName
+     */
+    public function __construct($navName = null)
+    {
+        view()->share([
+            'navName' => empty($navName) ? config('common.menu.menu_default') : $navName,
+        ]);
+    }
 }

@@ -2,6 +2,16 @@
 
 return [
     'path_image_system' => '/images/systems/',
+    'menu' => [
+        'menu_default' => 'home',
+        'menu_user' => 'user',
+        'menu_subject' => 'subject',
+        'menu_question' => 'question',
+        'menu_question_answer' => 'question_answer',
+        'menu_exam' => 'exam',
+        'menu_suggestion' => 'suggestion',
+        'menu_profile' => 'profile',
+    ],
     'search_key' => [
         'search_type_key' => 'search_type',
         'search_text_key' => 'search_text',
