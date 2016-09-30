@@ -95,6 +95,9 @@ return [
     |
     */
 
+    'option' => 'Option invalid.',
+    'edit' => 'Content edit invalid.',
+    'choice' => 'Number of answer correct invalid.',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

@@ -22,6 +22,7 @@ return [
         'single_choice' => 'Single choice',
         'multiple_choice' => 'Multiple choice',
         'text' => 'Text',
+        'choice' => 'Choice',
     ],
     'placeholder' => [
         'subject_question' => 'Please choose subject of question',

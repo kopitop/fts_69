@@ -41,4 +41,12 @@ return [
         'max_length_content' => 255,
         'question_record_default' => 20,
     ],
+    'question_answer' => [
+        'max_length_content' => 255,
+        'correct' => [
+            'answer_true' => 1,
+            'answer_false' => 0,
+        ],
+        'question_answer_record_default' => 20,
+    ],
 ];
