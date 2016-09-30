@@ -30,5 +30,6 @@ class RepositoryServiceProvider extends ServiceProvider
         App::bind(UserRepositoryInterface::class, UserRepository::class);
         App::bind(SubjectRepository::class);
         App::bind(QuestionRepositoryInterFace::class, QuestionRepository::class);
+        App::bind(QuestionAnswerRepositoryInterFace::class, QuestionAnswerRepository::class);
     }
 }

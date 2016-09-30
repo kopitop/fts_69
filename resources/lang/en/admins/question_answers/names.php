@@ -16,12 +16,15 @@ return [
         'panel_head_list' => 'List all answer of questions',
     ],
     'label_form' => [
+        'question_of_answer' => 'Question',
+        'type_question_of_answer' => 'Question type',
         'content_question_answer' => 'Content',
         'correct_question_answer' => 'Correct',
+        'question_answer_true' => 'True',
+        'question_answer_false' => 'False',
     ],
     'placeholder' => [
-        'subject_question_answer' => 'Please choose subject of answer of question',
-        'type_question_answer' => 'Please choose type of answer of question',
-        'content_question_answer' => 'Please enter content of answer of question',
+        'question_of_answer' => 'Please choose question of answer',
+        'content_question_answer' => 'Please enter content answer of question',
     ],
 ];
