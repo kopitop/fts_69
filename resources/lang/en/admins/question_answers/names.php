@@ -18,13 +18,15 @@ return [
     'label_form' => [
         'question_of_answer' => 'Question',
         'type_question_of_answer' => 'Question type',
-        'content_question_answer' => 'Content',
+        'content_question_answer' => 'Option',
         'correct_question_answer' => 'Correct',
         'question_answer_true' => 'True',
         'question_answer_false' => 'False',
+        'number_answer_of_question' => 'Number answer of question: numberOfAnswer',
+        'number_answer_true_of_question' => 'Number answer true of question: numberOfAnswerTrue',
     ],
     'placeholder' => [
         'question_of_answer' => 'Please choose question of answer',
-        'content_question_answer' => 'Please enter content answer of question',
+        'content_question_answer' => 'Please enter content of option',
     ],
 ];

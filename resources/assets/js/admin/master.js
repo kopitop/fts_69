@@ -19,24 +19,47 @@ $(".message-infor").show().delay(2000).fadeOut();
  */
 
 /* add option choice */
-function addOption()
+function addOption(message)
 {
-    $('.btn-add-option').attr('disabled', false);
-    var id = rand();
     var dataQuestions = $('.hide').data("option");
-    dataQuestions = dataQuestions.replace(/contentName/g, "content[idOption]");
-    dataQuestions = dataQuestions.replace(/correctName/g, "correct[idOption]");
-    dataQuestions = dataQuestions.replace(/idOption/g, id);
-    $('.answer-content').append(dataQuestions);
-}
-
-/* add option text */
-function addOptionText()
-{
-    $('.btn-add-option').attr('disabled', true);
-    var optionTextQuestions = $('.hide').data("optionText");
-    optionTextQuestions = optionTextQuestions.replace(/contentName/g, "content[]");
-    $('.answer-content').html(optionTextQuestions);
+    var id = rand();
+    var oldInput = " ";
+    $('.btn-add-option').attr('disabled', false);
+    if (message != null &&  message.oldInput != null) {
+        if(typeof message.oldInput.correct === 'undefined') {
+            dataQuestions = dataQuestions.replace(/contentName/g, "content[idOption]");
+            dataQuestions = dataQuestions.replace(/correctName/g, "correct[idOption]");
+            dataQuestions = dataQuestions.replace(/idOption/g, id);
+            dataQuestions = dataQuestions.replace(/contentValue/g, "");
+            $('.answer-content').append(dataQuestions);
+            $('#false-' + id).prop('checked',true);
+        }
+        else {
+            $.each(message.oldInput.correct, function (index, value) {
+                var oldDataQuestions = $('.hide').data("option");
+                oldDataQuestions = oldDataQuestions.replace(/contentName/g, "content[idOption]");
+                oldDataQuestions = oldDataQuestions.replace(/correctName/g, "correct[idOption]");
+                oldDataQuestions = oldDataQuestions.replace(/idOption/g, index);
+                oldDataQuestions = oldDataQuestions.replace(/contentValue/g, message.oldInput.content[index]);
+                oldInput += oldDataQuestions;
+            });
+            $('.answer-content').append(oldInput);
+            $.each(message.oldInput.correct, function (indexChoice, valueChoice) {
+                if (valueChoice == 0) {
+                    $('#false-' + indexChoice).prop('checked', true);
+                } else {
+                    $('#true-' + indexChoice).prop('checked', true);
+                }
+            });
+        }
+    } else {
+        dataQuestions = dataQuestions.replace(/contentName/g, "content[idOption]");
+        dataQuestions = dataQuestions.replace(/correctName/g, "correct[idOption]");
+        dataQuestions = dataQuestions.replace(/idOption/g, id);
+        dataQuestions = dataQuestions.replace(/contentValue/g, "");
+        $('.answer-content').append(dataQuestions);
+        $('#false-' + id).prop('checked',true);
+    }
 }
 
 /* create option in create question-answer page*/
@@ -52,15 +75,11 @@ function createOption(routeOption, questionId, token, message, action)
         success: function (data) {
             $('.answer-content').html("");
             if (data.success) {
-                var type = data.data.type;
                 if (action == "create") {
-                    if (type == message.text) {
-                        addOptionText();
-                    } else {
-                        addOption();
-                    }
+                    addOption(message);
                 }
-                showTypeText(type, message);
+
+                showTypeText(data.data.type, message);
             }
         }
     });
@@ -95,7 +114,8 @@ $(document).ready(function () {
         var message = $('.hide').data("message");
         var OptionId = $('select[name=question_id]').val();
         var action = $('.hide').data("action");
-        createOption(routeOption, OptionId, token, message);
+        createOption(routeOption, OptionId, token, message, action);
+
         $('.question-name').on('change', function() {
             var questionId = this.value;
             createOption(routeOption, questionId, token, message, action);

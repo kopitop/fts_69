@@ -20,7 +20,9 @@ class QuestionAnswerRepository extends BaseRepository implements QuestionAnswerR
 
     public function getData()
     {
-        return Question::orderBy('created_at', config('common.sort.sort_descending'))->pluck('content', 'id');
+        return Question::where('type', '<>', config('common.question.type_question.text'))
+            ->orderBy('created_at', config('common.sort.sort_descending'))
+            ->pluck('content', 'id');
     }
 
     public function store($input)
@@ -55,5 +57,23 @@ class QuestionAnswerRepository extends BaseRepository implements QuestionAnswerR
     public function show($id = null)
     {
         return QuestionAnswer::with('question')->where('id', $id)->first();
+    }
+
+    public function update($inputs, $id)
+    {
+        $questionAnswer = QuestionAnswer::with('question')->findOrFail($id);
+        if ($questionAnswer->question->type == config('common.question.type_question.single_choice')) {
+            $condition = [
+                'question_id' => $questionAnswer->question->id,
+                'correct' => config('common.question_answer.correct.answer_true'),
+            ];
+            $answerCorrect = QuestionAnswer::where($condition)->get();
+
+            if ($answerCorrect->count()) {
+                QuestionAnswer::where($condition)->update(['correct' => config('common.question_answer.correct.answer_false')]);
+            }
+        }
+
+        $questionAnswer->update($inputs);
     }
 }
