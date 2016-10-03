@@ -3,9 +3,7 @@
 namespace App\Repositories\Question_Answer;
 
 use App\Models\Question;
-use App\Models\Subject;
 use App\Models\QuestionAnswer;
-use App\Models\UserQuestion;
 use Exception;
 use DB;
 use Carbon\Carbon;
@@ -75,5 +73,31 @@ class QuestionAnswerRepository extends BaseRepository implements QuestionAnswerR
         }
 
         $questionAnswer->update($inputs);
+    }
+
+    public function delete($ids)
+    {
+        $questionAnswer = QuestionAnswer::findOrFail($ids);
+
+        try {
+            DB::beginTransaction();
+
+            /**
+             *  delete exam questions
+             */
+            $questionAnswer->userQuestions()->delete();
+
+            /**
+             * delete question answer
+             */
+            $questionAnswer->delete();
+            DB::commit();
+            $message = trans('messages.success.delete_success', ['item' => 'answer of question']);
+        } catch (Exception $e) {
+            DB::rollBack();
+            $message = trans('messages.error.delete_error', ['item' => 'answer of question']);
+        }
+
+        return $message;
     }
 }

@@ -123,6 +123,7 @@ class QuestionAnswerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = $this->questionAnswerRepository->delete($id);
+        return redirect()->route('admin.question-answer.index')->with('message', $message);
     }
 }
