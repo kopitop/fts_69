@@ -23,11 +23,20 @@ class QuestionAnswerRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'question_id' => 'required|exists:questions,id,deleted_at,NULL',
-            'content' => 'option:question_id',
-            'correct' => 'choice:question_id',
         ];
+
+        if ($this->request->get('content')) {
+            foreach ($this->request->get('content') as $key => $val) {
+                $rules['content.' . $key] = 'required|max:' . config('common.question.max_length_content');
+            }
+        } else {
+            $rules['content'] = 'required';
+        }
+
+        $rules['correct'] = 'choice:question_id';
+        return $rules;
     }
 
     /**
@@ -38,11 +47,25 @@ class QuestionAnswerRequest extends FormRequest
     public function messages()
     {
         $trans = trans('admins/question_answers/validations');
-        return [
+        $messages = [
             'question_id.required' => $trans['question_id']['required'],
             'question_id.exists' => $trans['question_id']['exists'],
-            'content.option' => $trans['content']['option'],
             'correct.choice' => $trans['correct']['choice'],
         ];
+
+        if ($this->request->get('content')) {
+            $indexOfOption = 0;
+            foreach ($this->request->get('content') as $key => $val) {
+                $indexOfOption += 1;
+                $messages['content.' . $key . '.required'] = trans('admins/question_answers/validations.content.required',
+                    ['indexOption' => $indexOfOption]);
+                $messages['content.' . $key . '.max'] = trans('admins/question_answers/validations.content.max',
+                    ['indexOption' => $indexOfOption]);
+            }
+        } else {
+            $messages['content'] = $trans['content']['not_found'];
+        }
+
+        return $messages;
     }
 }
