@@ -49,4 +49,11 @@ return [
         ],
         'question_answer_record_default' => 20,
     ],
+    'suggestion' => [
+        'suggestion_record_default' => 10,
+        'status' => [
+            'waiting' => 1,
+            'confirm' => 2,
+        ],
+    ],
 ];

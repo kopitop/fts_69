@@ -1,6 +1,6 @@
 $.widget.bridge('uibutton', $.ui.button);
 $(function () {
-    $('#user-lists, #subject-lists, .question-lists, .exam-lists, .question-answer-lists').DataTable({
+    $('#user-lists, #subject-lists, #suggestion-list, .question-lists, .exam-lists, .question-answer-lists').DataTable({
         "paging": false,
         "lengthChange": false,
         "searching": false,
