@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\QueryFilter;
 
 class QuestionAnswer extends Model
 {
@@ -20,6 +21,11 @@ class QuestionAnswer extends Model
     public function question()
     {
         return $this->belongsTo(Question::class);
+    }
+
+    public function scopeFilter($query, QueryFilter $filters)
+    {
+        return $filters->apply($query);
     }
 
 }

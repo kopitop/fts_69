@@ -28,9 +28,25 @@ class QuestionAnswerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(QuestionAnswerFilters $filters)
     {
-        //
+        $record = config('common.question_answer.question_answer_record_default');
+        $sort = config('common.sort.descending');
+        $searchTypes = [
+            'question' => trans('admins/question_answers/names.label_form.question_of_answer'),
+            'content' => trans('admins/question_answers/names.label_form.content_question_answer'),
+            'correct' => trans('admins/question_answers/names.label_form.correct_question_answer'),
+        ];
+        $input = $filters->input();
+
+        foreach ($input as $key => $value) {
+            $searchType = $key;
+            $searchText = $value;
+        }
+
+        $route = "admin.question-answer.index";
+        $questionAnswers =  QuestionAnswer::with('question')->filter($filters)->orderBy('created_at', $sort)->paginate($record);
+        return view('admins.question_answers.index', compact('questionAnswers', 'searchTypes', 'searchType', 'searchText', 'route'));
     }
 
     /**
