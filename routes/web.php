@@ -25,4 +25,7 @@ Route::group(['namespace' => 'Account'], function () {
     Route::resource('login', 'LoginController', ['only' => [
         'index', 'store'
     ]]);
+    Route::resource('register', 'RegisterController', ['only' => [
+        'index', 'store'
+    ]]);
 });

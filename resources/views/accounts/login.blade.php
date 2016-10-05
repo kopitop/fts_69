@@ -53,7 +53,7 @@
                         {{ Form::close() }}
                     </div>
                     <div class="panel-footer">
-                        <a href="#"><i class="fa fa-registered"></i> {{ trans('accounts/logins/names.label_form.register') }}</a>
+                        <a href="{{ route('register.index') }}"><i class="fa fa-registered"></i> {{ trans('accounts/logins/names.label_form.register') }}</a>
                         <a href="#" class="forgot-password">
                             <i class="fa fa-refresh"></i> {{ trans('accounts/logins/names.label_form.forgot_password') }}
                         </a>
