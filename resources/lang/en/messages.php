@@ -9,11 +9,13 @@ return [
         'delete_error' => 'Can\'t delete :item. Please check again!',
         'upload_file_error' => 'Can\'t upload file. Please check again!',
         'delete_file_error' => 'Can\'t delete file. Please check again!',
+        'login_fail' => 'Login fail. Please check again!',
     ],
     'success' => [
         'create_success' => 'Create :item SUCCESS',
         'update_success' => 'Update :item SUCCESS',
         'delete_success' => 'Delete :item SUCCESS',
+        'login_success' => 'Login SUCCESS',
     ],
     'confirm' => [
         'confirm_delete' => 'Are you sure you want to delete this :item?',
