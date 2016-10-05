@@ -12,6 +12,11 @@ class SuggestionRepository extends BaseRepository implements SuggestionRepositor
         $this->model = $suggestion;
     }
 
+    public function show($id = null)
+    {
+        return Suggestion::with('user', 'subject', 'suggestionDetails')->find($id);
+    }
+
     public function confirm($id)
     {
         //

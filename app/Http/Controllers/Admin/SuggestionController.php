@@ -5,16 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Filter\SuggestionsFilters;
 use App\Http\Controllers\Controller;
 use App\Models\Suggestion;
+use App\Repositories\Suggestion\SuggestionRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
 class SuggestionController extends Controller
 {
 
-    public function __construct()
+    private $suggestionRepository;
+
+    public function __construct(SuggestionRepository $suggestionRepository)
     {
         parent::__construct(config('common.menu.menu_suggestion'));
-
+        $this->suggestionRepository = $suggestionRepository;
     }
 
     /**
@@ -74,7 +77,8 @@ class SuggestionController extends Controller
      */
     public function show($id)
     {
-        //
+        $suggestion = $this->suggestionRepository->show($id);
+        return view('admins.suggestions.show', compact('suggestion'));
     }
 
     /**
