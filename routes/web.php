@@ -11,5 +11,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
     Route::resource('question', 'QuestionController');
     Route::resource('exam', 'ExamController');
     Route::resource('question-answer', 'QuestionAnswerController');
-    Route::resource('suggestion', 'SuggestionController');
+    Route::resource('suggestion', 'SuggestionController', ['except' => [
+        'create', 'store', 'update'
+    ]]);
 });
