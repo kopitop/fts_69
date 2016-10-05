@@ -15,3 +15,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
         'create', 'store', 'update'
     ]]);
 });
+
+/*
+ /--------------------------------------------------------------------
+ / Route login - logout
+ /--------------------------------------------------------------------
+ */
+Route::group(['namespace' => 'Account'], function () {
+    Route::resource('login', 'LoginController', ['only' => [
+        'index', 'store'
+    ]]);
+});
