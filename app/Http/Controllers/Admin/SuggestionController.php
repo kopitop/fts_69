@@ -89,7 +89,8 @@ class SuggestionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $message = $this->suggestionRepository->confirm($id);
+        return redirect()->route('admin.suggestion.index')->with('message', $message);
     }
 
     /**
@@ -112,6 +113,7 @@ class SuggestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = $this->suggestionRepository->delete($id);
+        return redirect()->route('admin.suggestion.index')->with('message', $message);
     }
 }
