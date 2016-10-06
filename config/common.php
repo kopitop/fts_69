@@ -56,4 +56,5 @@ return [
             'confirm' => 2,
         ],
     ],
+    'number_random_token_password_reset' => 40,
 ];
