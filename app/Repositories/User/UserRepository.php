@@ -90,4 +90,31 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return $message;
     }
 
+    public function sendEmailResetPassword($email) {
+        $token = str_random(config('common.number_random_token_password_reset'));
+        $now = Carbon::now();
+        DB::table('password_resets')->insert([
+            'email' => $email,
+            'token' => $token,
+            'created_at' => $now,
+        ]);
+        $link = asset('reset-password/' . $token);
+
+        try {
+            Mail::send('accounts.mail', ['link' => $link], function ($message) use($email) {
+                $message->to($email)->subject(trans('accounts/forgot_passwords/names.mail.subject'));
+            });
+            $message = trans('messages.success.send_mail_reset_password_success');
+        } catch (Exception $ex) {
+            $message = trans('messages.error.send_mail_reset_password_fail');
+        }
+
+        return $message;
+    }
+
+    public function checkToken($emailToken) {
+        $passwordReset = DB::table('password_resets')->where('token', $emailToken)->first();
+        return $passwordReset;
+    }
+
 }

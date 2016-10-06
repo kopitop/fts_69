@@ -28,4 +28,10 @@ Route::group(['namespace' => 'Account'], function () {
     Route::resource('register', 'RegisterController', ['only' => [
         'index', 'store'
     ]]);
+    Route::resource('forgot-password', 'PasswordController', ['only' => [
+        'index', 'store'
+    ]]);
+    Route::resource('reset-password', 'ResetPassword', ['only' => [
+        'store', 'show'
+    ]]);
 });

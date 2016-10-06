@@ -8,4 +8,6 @@ interface UserRepositoryInterface
     public function updateAvatar($oldPath, $fileName);
     public function deleteAvatar($fileName);
     public function destroy($user);
+    public function sendEmailResetPassword($email);
+    public function checkToken($emailToken);
 }
