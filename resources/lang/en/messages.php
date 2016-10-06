@@ -11,6 +11,7 @@ return [
         'delete_file_error' => 'Can\'t delete file. Please check again!',
         'login_fail' => 'Login fail. Please check again!',
         'send_mail_reset_password_fail' => 'Can\'t send mail reset password. Pleas contact admin!',
+        'password_incorrect' => 'Can\'t change password, can you enter password incorrect. Please check again!',
     ],
     'success' => [
         'create_success' => 'Create :item SUCCESS',
