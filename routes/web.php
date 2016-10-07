@@ -50,3 +50,12 @@ Route::group(['namespace' => 'User'], function () {
     ]]);
     Route::resource('exam', 'ExamController');
 });
+
+/*
+/--------------------------------------------------------------------
+/ Route exam
+/--------------------------------------------------------------------
+*/
+Route::resource('result', 'ResultController', ['only' => [
+    'update'
+]]);
