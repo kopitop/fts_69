@@ -24,12 +24,12 @@ class Exam extends Model
 
     public function examStatuses()
     {
-        return $this->hasMany(ExamStatus::class);
+        return $this->hasOne(ExamStatus::class);
     }
 
     public function examResults()
     {
-        return $this->hasMany(ExamResult::class);
+        return $this->hasOne(ExamResult::class);
     }
 
     public function subject()

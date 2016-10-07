@@ -57,4 +57,15 @@ return [
         ],
     ],
     'number_random_token_password_reset' => 40,
+    'exam' => [
+        'max_length_name' => 20,
+        'exam_record_default' => 10,
+        'score_default' => 0,
+        'status' => [
+            'exam_checked' => 1,
+            'exam_unchecked' => 2,
+            'exam_save' => 3,
+            'exam_testing' => 4,
+        ]
+    ],
 ];

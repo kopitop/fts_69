@@ -12,6 +12,8 @@ use App\Repositories\Question_Answer\QuestionAnswerRepositoryInterFace;
 use App\Repositories\Question_Answer\QuestionAnswerRepository;
 use App\Repositories\Suggestion\SuggestionRepository;
 use App\Repositories\Suggestion\SuggestionRepositoryInterface;
+use App\Repositories\Exam\ExamRepositoryInterFace;
+use App\Repositories\Exam\ExamRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -36,5 +38,6 @@ class RepositoryServiceProvider extends ServiceProvider
         App::bind(QuestionRepositoryInterFace::class, QuestionRepository::class);
         App::bind(QuestionAnswerRepositoryInterFace::class, QuestionAnswerRepository::class);
         App::bind(SuggestionRepositoryInterface::class, SuggestionRepository::class);
+        App::bind(ExamRepositoryInterFace::class, ExamRepository::class);
     }
 }
