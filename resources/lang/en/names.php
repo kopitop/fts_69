@@ -22,6 +22,7 @@ return [
         'button_register' => 'Register',
         'button_create_exam' => 'Create exam',
         'button_save' => 'Save',
+        'button_view' => 'View',
         'button_start_exam' => 'Start',
     ],
     'paginations' => 'Showing :start to :finish of :numberOfRecords entry|Showing :start to :finish of :numberOfRecords entries',
