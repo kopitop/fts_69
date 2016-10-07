@@ -51,9 +51,16 @@ return [
     ],
     'suggestion' => [
         'suggestion_record_default' => 10,
+        'max_length_content' => 255,
         'status' => [
             'waiting' => 1,
             'confirm' => 2,
+        ],
+    ],
+    'suggestion_detail' => [
+        'correct' => [
+            'true' => 1,
+            'false' => 0,
         ],
     ],
     'number_random_token_password_reset' => 40,
