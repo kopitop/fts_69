@@ -12,6 +12,9 @@ return [
         'login_fail' => 'Login fail. Please check again!',
         'send_mail_reset_password_fail' => 'Can\'t send mail reset password. Pleas contact admin!',
         'password_incorrect' => 'Can\'t change password, can you enter password incorrect. Please check again!',
+        'create_exam_fail' => 'Create exam FAIL, number of question not enough to create a exam. Please contact admin!',
+        'save_exam_error' => 'This exam of your can\'t save. Please contact admin!',
+        'finish_exam_error' => 'This exam of your can\'t submit. Please contact admin!',
     ],
     'success' => [
         'create_success' => 'Create :item SUCCESS',
@@ -19,6 +22,8 @@ return [
         'delete_success' => 'Delete :item SUCCESS',
         'login_success' => 'Login SUCCESS',
         'send_mail_reset_password_success' => 'A email have been sent into mailbox of you. Please check email!',
+        'save_exam_success' => 'This exam of your SAVED.',
+        'finish_exam_success' => 'You finished this exam. Please view result...',
     ],
     'confirm' => [
         'confirm_delete' => 'Are you sure you want to delete this :item?',
