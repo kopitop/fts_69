@@ -30,3 +30,26 @@ body {
 #profile .panel-heading{
     border-radius: 0;
 }
+
+#exam-list {
+    padding: 15px;
+}
+
+#head-table {
+    background: gainsboro;
+}
+
+.exam-header {
+    text-align: center;
+}
+
+.time-spent {
+    position: fixed;
+    top: 200px;
+    z-index: 100;
+}
+
+.btn-exam-action {
+    position: fixed;
+    bottom: 10px;
+}

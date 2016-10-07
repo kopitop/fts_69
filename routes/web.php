@@ -48,4 +48,5 @@ Route::group(['namespace' => 'User'], function () {
     Route::resource('password', 'PasswordController', ['only' => [
         'store'
     ]]);
+    Route::resource('exam', 'ExamController');
 });
