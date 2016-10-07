@@ -64,7 +64,11 @@ class ExamController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = $this->examRepository->startExam($id);
+        $exam = $data['exam'];
+        $duration = $data['duration'];
+
+        return view('users.exams.show', compact('exam', 'duration'));
     }
 
     /**

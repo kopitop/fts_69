@@ -100,4 +100,83 @@ class ExamRepository extends BaseRepository implements ExamRepositoryInterFace
         return $data;
     }
 
+    public function show($id = null)
+    {
+        $exam = Exam::with('userQuestions', 'examQuestions.question.questionAnswers', 'examStatus.user', 'examResult.user', 'subject')
+            ->find($id);
+
+        $userQuestions = $exam->userQuestions->pluck('question_answer_id')->toArray();
+        if (count($exam->examQuestions)) {
+            foreach ($exam->examQuestions as $examQuestion) {
+                $question = $examQuestion->question;
+                if ($question->type == config('common.question.type_question.single_choice')) {
+                    $index = 0;
+                    foreach ($question->questionAnswers as $questionAnswer) {
+                        $index++;
+                        if (in_array($questionAnswer->id, $userQuestions)
+                            && $questionAnswer->correct == config('common.question_answer.correct.answer_true')) {
+                            $answerInfor[] = [$question->id => trans('admins/exams/names.label_form.exam_correct')];
+                            break;
+                        } else {
+                            if ($index == count($question->questionAnswers)) {
+                                $answerInfor[] = [$question->id => trans('admins/exams/names.label_form.exam_incorrect')];
+                            } else {
+                                continue;
+                            }
+                        }
+                    }
+                } elseif ($question->type == config('common.question.type_question.multiple_choice')) {
+                    $dataUserQuestion = null;
+                    $correctTrue = null;
+                    foreach ($question->questionAnswers as $questionAnswer) {
+                        if (in_array($questionAnswer->id, $userQuestions)) {
+                            $dataUserQuestion[] = $questionAnswer->id;
+                        }
+                    }
+
+                    $correctTrue = [];
+                    foreach ($question->questionAnswers as $questionAnswer) {
+                        if ($questionAnswer->correct == config('common.question_answer.correct.answer_true')) {
+                            $correctTrue[] = ['id' => $questionAnswer->id];
+                        }
+                    }
+
+                    $correctTrue = array_pluck($correctTrue, 'id');
+                    if (count($dataUserQuestion) != count($correctTrue)) {
+                        $answerInfor[] = [$question->id => trans('admins/exams/names.label_form.exam_incorrect')];
+                    } else {
+                        for ($index = 0; $index < count($correctTrue); $index++) {
+                            if (!in_array($correctTrue[$index], $userQuestions)) {
+                                $answerInfor[] = [$question->id => trans('admins/exams/names.label_form.exam_incorrect')];
+                                break;
+                            } else {
+                                if ($index == count($correctTrue) - 1) {
+                                    $answerInfor[] = [$question->id => trans('admins/exams/names.label_form.exam_correct')];
+                                } else {
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    foreach ($question->questionAnswers as $questionAnswer) {
+                        if ($exam->userQuestions->pluck('question_answer_id')->contains($questionAnswer->id)) {
+                            if ($questionAnswer->correct == config('common.question_answer.correct.answer_false')) {
+                                $answerInfor[] = [$question->id => trans('admins/exams/names.label_form.exam_incorrect')];
+                            } else {
+                                $answerInfor[] = [$question->id => trans('admins/exams/names.label_form.exam_correct')];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $dataReturn = [
+            'exam' => $exam,
+            'answer' => $answerInfor,
+        ];
+
+        return $dataReturn;
+    }
+
 }
