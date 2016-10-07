@@ -27,7 +27,7 @@ class UserEditRequest extends FormRequest
         return [
             'name' => 'required|max:' . $config['max_length_name'],
             'email' => 'required|email',
-            'avatar' => 'file|image|max:' . $config['max_capacity_avatar'],
+            'avatar_new' => 'file|image|max:' . $config['max_capacity_avatar'],
         ];
     }
 
@@ -44,9 +44,9 @@ class UserEditRequest extends FormRequest
             'name.max' => $trans['name']['max'],
             'email.required' => $trans['email']['required'],
             'email.email' => $trans['email']['email'],
-            'avatar.file' => $trans['avatar']['file'],
-            'avatar.image' => $trans['avatar']['image'],
-            'avatar.max' => $trans['avatar']['max'],
+            'avatar_new.file' => $trans['avatar']['file'],
+            'avatar_new.image' => $trans['avatar']['image'],
+            'avatar_new.max' => $trans['avatar']['max'],
         ];
     }
 }

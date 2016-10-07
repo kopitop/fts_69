@@ -10,4 +10,5 @@ interface UserRepositoryInterface
     public function destroy($user);
     public function sendEmailResetPassword($email);
     public function checkToken($emailToken);
+    public function changePassword($password, $newPassword);
 }

@@ -35,3 +35,17 @@ Route::group(['namespace' => 'Account'], function () {
         'store', 'show'
     ]]);
 });
+
+/*
+/--------------------------------------------------------------------
+/ Route user
+/--------------------------------------------------------------------
+*/
+Route::group(['namespace' => 'User'], function () {
+    Route::resource('profile', 'ProfileController', ['only' => [
+        'index', 'update', 'destroy'
+    ]]);
+    Route::resource('password', 'PasswordController', ['only' => [
+        'store'
+    ]]);
+});

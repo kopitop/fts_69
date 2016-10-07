@@ -11,6 +11,9 @@ use App\Repositories\BaseRepository;
 use App\Models\Suggestion;
 use App\Models\SuggestionDetail;
 Use App\Repositories\User\UserRepositoryInterface;
+use Mail;
+use Illuminate\Support\Facades\Hash;
+use DB;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -115,6 +118,17 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function checkToken($emailToken) {
         $passwordReset = DB::table('password_resets')->where('token', $emailToken)->first();
         return $passwordReset;
+    }
+
+    public function changePassword($password, $newPassword)
+    {
+        $user = auth()->user();;
+        if (Hash::check($password, $user->password)) {
+            $user->update(['password' => $newPassword]);
+            return true;
+        }
+
+        return false;
     }
 
 }
