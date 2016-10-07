@@ -50,7 +50,10 @@ class ExamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $subjectId = $request->subject_id;
+        $message = $this->examRepository->createExam($subjectId);
+
+        return redirect()->route('exam.index')->with('message', $message);
     }
 
     /**
@@ -72,7 +75,11 @@ class ExamController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = $this->examRepository->show($id);
+        $exam = $data['exam'];
+        $answer = $data['answer'];
+
+        return view('users.exams.edit', compact('exam', 'answer'));
     }
 
     /**
