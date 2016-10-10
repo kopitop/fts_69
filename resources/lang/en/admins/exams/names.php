@@ -35,4 +35,8 @@ return [
         'save' => 'Save',
         'testing' => 'Testing',
     ],
+    'system' => [
+        'subject_mail_exam' => 'Result test :subject of you at Framgia testing',
+    ],
 ];
+
