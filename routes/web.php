@@ -5,7 +5,7 @@
  / Route admin
  /--------------------------------------------------------------------
  */
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.', 'middleware' => 'admin'], function () {
     Route::resource('user', 'UserController');
     Route::resource('subject', 'SubjectController');
     Route::resource('question', 'QuestionController');
@@ -13,6 +13,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
     Route::resource('question-answer', 'QuestionAnswerController');
     Route::resource('suggestion', 'SuggestionController', ['except' => [
         'create', 'store', 'update'
+    ]]);
+    Route::resource('profile', 'ProfileController', ['only' => [
+        'index', 'update'
+    ]]);
+    Route::resource('password', 'PasswordController', ['only' => [
+        'store'
     ]]);
 });
 
@@ -48,7 +54,7 @@ Route::group(['namespace' => 'Account'], function () {
 / Route user
 /--------------------------------------------------------------------
 */
-Route::group(['namespace' => 'User'], function () {
+Route::group(['namespace' => 'User', 'middleware' => 'user'], function () {
     Route::resource('profile', 'ProfileController', ['only' => [
         'index', 'update', 'destroy'
     ]]);
