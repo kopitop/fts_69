@@ -6,9 +6,7 @@
     @if ($suggestions->count())
         <h3>
             {{ trans('users/suggestions/names.label.head_table') }}
-            <a href="{{ route('suggestion.create') }}" class="btn btn-success">
-                <span class="glyphicon glyphicon-plus"></span>
-            </a>
+            <a href="{{ route('suggestion.create') }}" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
         </h3>
         @include('layout.message')
         <table class="table table-hover">
@@ -31,13 +29,23 @@
                     <td>{!! $suggestion->type !!} </td>
                     <td>{!! $suggestion->status !!} </td>
                     <td>
-                        @if ($suggestion->status == trans('admins/suggestions/names.label_form.status.waiting'))
-                            <a href="{{ route('suggestion.edit', ['id' => $suggestion->id]) }}">
-                                <button type="button" class="btn btn-primary">
-                                    {{ trans('names.button.button_edit') }}
-                                </button>
+                        {{
+                            Form::open([
+                                'route' => ['suggestion.destroy', $suggestion->id],
+                                'method' => 'DELETE',
+                                'onsubmit' => 'return confirmDelete("' . trans('messages.confirm.confirm_delete', ['item' => 'suggestion']) . '")'
+                            ])
+                        }}
+                            <a href="{{ route('suggestion.show', ['id' => $suggestion->id]) }}" class="btn btn-primary">
+                                {{ trans('names.button.button_view') }}
                             </a>
-                        @endif
+                            @if ($suggestion->status == trans('admins/suggestions/names.label_form.status.waiting'))
+                                <a href="{{ route('suggestion.edit', ['id' => $suggestion->id]) }}" class="btn btn-warning">
+                                    {{ trans('names.button.button_edit') }}
+                                </a>
+                            @endif
+                            {{ Form::button(trans('names.button.button_delete'), ['type' => 'submit', 'class' => 'btn btn-danger']) }}
+                        {{ Form::close() }}
                     </td>
                 </tr>
             @endforeach

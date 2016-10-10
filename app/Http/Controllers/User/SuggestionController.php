@@ -7,6 +7,7 @@ use App\Models\Subject;
 use App\Repositories\Suggestion\SuggestionRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Requests\Client\SuggestionRequest;
+use App\Http\Requests\Client\SuggestionEditRequest;
 use App\Http\Requests;
 
 class SuggestionController extends Controller
@@ -38,28 +39,10 @@ class SuggestionController extends Controller
      */
     public function create()
     {
-        $trans = trans('admins/questions/names.label_form');
-        $config = config('common.question.type_question');
-        $subjects = Subject::orderBy('created_at', config('common.sort.descending'))->pluck('name', 'id');
-        $types = [
-            $config['single_choice'] => $trans['single_choice'],
-            $config['multiple_choice'] => $trans['multiple_choice'],
-            $config['text'] => $trans['text'],
-        ];
-        $data = json_encode([
-            'key' => [
-                'single' => $config['single_choice'],
-                'multiple' => $config['multiple_choice'],
-                'text' => $config['text'],
-            ],
-            'view' => [
-                'text' => view('layout.option-text')->render(),
-                'multiple' => view('layout.option-multiple-choice')->render(),
-                'single' => view('layout.option-single-choice')->render(),
-            ],
-            'oldInput' => session("_old_input"),
-        ]);
-
+        $dataRtn = $this->suggestionRepository->userCreate();
+        $subjects = $dataRtn['subjects'];
+        $types = $dataRtn['types'];
+        $data = $dataRtn['data'];
         return view('users.suggestions.create', compact('subjects', 'types', 'data'));
     }
 
@@ -88,7 +71,9 @@ class SuggestionController extends Controller
      */
     public function show($id)
     {
-        //
+        $dataRtn = $this->suggestionRepository->edit($id);
+        $suggestion = $dataRtn['suggestion'];
+        return view('users.suggestions.show', compact('suggestion'));
     }
 
     /**
@@ -99,19 +84,37 @@ class SuggestionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $dataRtn = $this->suggestionRepository->edit($id);
+        $subjects = $dataRtn['subjects'];
+        $types = $dataRtn['types'];
+        $data = $dataRtn['data'];
+        $suggestion = $dataRtn['suggestion'];
+        $type = $dataRtn['type'];
+        $suggestionDetail = json_encode([
+            'view' => view('layout.suggestion-detail', [
+                'suggestion' => $suggestion,
+                'type' => $type,
+            ])->render(),
+        ]);
+        return view('users.suggestions.edit', compact('subjects', 'types', 'data', 'suggestion', 'type', 'suggestionDetail'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  SuggestionEditRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SuggestionEditRequest $request, $id)
     {
-        //
+        $input = $request->only('subject_id', 'type', 'content', 'content_option', 'correct_option',
+        'content_text',
+            'content_single_choice', 'correct_single_choice',
+            'content_multiple_choice', 'correct_multiple_choice', 'remove');
+        $message = $this->suggestionRepository->update($input, $id);
+
+        return redirect()->route('suggestion.index')->with('message', $message);
     }
 
     /**
@@ -122,6 +125,7 @@ class SuggestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = $this->suggestionRepository->delete($id);
+        return redirect()->route('suggestion.index')->with('message', $message);
     }
 }
