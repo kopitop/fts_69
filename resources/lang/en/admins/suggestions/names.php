@@ -21,9 +21,15 @@ return [
         'content' => 'Content',
         'status' => [
             'name' => 'Status',
-            'waiting' => 'Waiting',
-            'confirm' => 'Confirm',
+            'waiting' => '<div class="label label-warning">Waiting</div>',
+            'confirm' => '<div class="label label-success">Confirm</div>',
         ],
         'type' => 'Type',
+        'option' => 'Option :index',
+        'correct' => [
+            'name' => 'Correct',
+            'true' => '<div class="label label-success">True</div>',
+            'false' => '<div class="label label-danger">False</div>',
+        ],
     ],
 ];

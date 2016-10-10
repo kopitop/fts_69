@@ -34,6 +34,10 @@ Route::group(['namespace' => 'Account'], function () {
     Route::resource('reset-password', 'ResetPassword', ['only' => [
         'store', 'show'
     ]]);
+    Route::resource('exam', 'ExamController', ['except' => [
+        'create', 'destroy', 'update'
+    ]]);
+    Route::resource('suggestion', 'SuggestionController');
 });
 
 /*
