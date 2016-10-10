@@ -9,7 +9,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.', 'mi
     Route::resource('user', 'UserController');
     Route::resource('subject', 'SubjectController');
     Route::resource('question', 'QuestionController');
-    Route::resource('exam', 'ExamController');
+    Route::resource('exam', 'ExamController', ['except' => [
+        'create', 'destroy', 'store'
+    ]]);
     Route::resource('question-answer', 'QuestionAnswerController');
     Route::resource('suggestion', 'SuggestionController', ['except' => [
         'create', 'store', 'update'
@@ -19,6 +21,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.', 'mi
     ]]);
     Route::resource('password', 'PasswordController', ['only' => [
         'store'
+    ]]);
+    Route::resource('check', 'CheckController', ['only' => [
+        'update'
     ]]);
 });
 

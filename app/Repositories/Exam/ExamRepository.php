@@ -176,4 +176,65 @@ class ExamRepository extends BaseRepository implements ExamRepositoryInterFace
         return $dataReturn;
     }
 
+    public function update($inputs, $id)
+    {
+        $exam = Exam::with('subject', 'examResult.user')->find($id);
+        ExamStatus::where([
+            'exam_id' => $exam->id,
+            'user_id' => $inputs['user_id'],
+        ])->update(['status' => config('common.exam.status.exam_checked')]);
+
+        /*send email*/
+        $email = $exam->examResult->user->email;
+        try {
+            Mail::send('layout.mail-exam', [
+                'subject' => $exam->subject->name,
+                'user' => $exam->examResult->user->name,
+                'exam' => $exam->name,
+                'result' => $exam->examResult->result . "/" . $exam->subject->number_question,
+                'start' => $exam->created_at,
+            ], function ($message) use($email, $exam) {
+                $message->to($email)->subject(trans('admins/exams/names.system.subject_mail_exam', ['subject' => $exam->subject->name]));
+            });
+            $messageEmail = trans('messages.success.send_mail_result_exam_success');
+        } catch (Exception $ex) {
+            $messageEmail = trans('messages.error.send_mail_result_exam_error');
+        }
+
+        /*send chatwork*/
+        $chatworkId = $exam->examResult->user->chatwork_id;
+        $view = view('layout.chatwork', [
+            'subject' => $exam->subject->name,
+            'user' => $exam->examResult->user->name,
+            'exam' => strip_tags($exam->name),
+            'result' => $exam->examResult->result . "/" . $exam->subject->number_question,
+            'start' => $exam->created_at,
+        ])->render();
+        $apiKey = config('common.api_chatwork');
+        ChatworkSDK::setApiKey($apiKey);
+        $api = new ChatworkApi();
+
+        /*get all contacts*/
+        $contacts = $api->getContacts();
+        $member = null;
+
+        foreach ($contacts as $contact) {
+            if ($contact["chatwork_id"] == $chatworkId) {
+                $member = $contact;
+            }
+        }
+
+        if (count($member)) {
+            $api->createRoomMessage($member["room_id"], $view);
+            $messageChatwork = trans('messages.success.send_message_chatwork_success');
+        } else {
+            $messageChatwork = trans('messages.error.send_message_chatwork_error');
+        }
+
+        return [
+            'messageEmail' => $messageEmail,
+            'messageChatwork' => $messageChatwork,
+        ];
+    }
+
 }
