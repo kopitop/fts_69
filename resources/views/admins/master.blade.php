@@ -64,17 +64,17 @@
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="{{ asset('images/systems/default-avatar.png') }}" class="user-image"
+                                    <img src="{{ asset(auth()->user()->avatar) }}" class="user-image"
                                          alt="User Image">
-                                    <span class="hidden-xs">Admin</span>
+                                    <span class="hidden-xs">{{ auth()->user()->name }}</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
-                                        <img src="{{ asset('images/systems/default-avatar.png') }}" class="img-circle"
+                                        <img src="{{ asset(auth()->user()->avatar) }}" class="img-circle"
                                              alt="User Image">
                                         <p>
-                                            Admin
+                                            {{ auth()->user()->name }}
                                         </p>
                                     </li>
                                     <!-- Menu Footer-->
@@ -84,7 +84,7 @@
                                                class="btn btn-default btn-flat">{{ trans('names.label.label_profile') }}</a>
                                         </div>
                                         <div class="pull-right">
-                                            <a href="{{ route('logout') }}"
+                                            <a href="{{ route('logout.index') }}"
                                                class="btn btn-default btn-flat">{{ trans('names.label.label_sign_out') }}</a>
                                         </div>
                                     </li>
@@ -102,10 +102,10 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="{{ asset('images/systems/default-avatar.png') }}" class="img-circle" alt="User Image">
+                            <img src="{{ asset(auth()->user()->avatar) }}" class="img-circle" alt="User Image">
                         </div>
                         <div class="pull-left info">
-                            <p>Admin</p>
+                            <p>{{ auth()->user()->name }}</p>
                             <a href="{{ route('admin.profile.index') }}">
                                 <i class="fa fa-circle text-success"></i> {{ trans('names.label.label_online') }}
                             </a>
@@ -114,11 +114,6 @@
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                         <li class="header">{{ trans('admins/names.label.label_admin_menu') }}</li>
-                        <li class="treeview{{ $navName === config('common.menu.menu_default') ? ' active' : '' }}">
-                            <a href="{{ route('admin.home.index') }}">
-                                <i class="fa fa-dashboard"></i> <span>{{ trans('names.label.label_home') }}</span>
-                            </a>
-                        </li>
                         <li class="treeview{{ $navName === config('common.menu.menu_user') ? ' active' : '' }}">
                             <a href="{{ route('admin.user.index') }}">
                                 <i class="fa fa-user"></i> <span>{{ trans('admins/names.label.label_admin_user') }}</span>
@@ -172,9 +167,9 @@
             </div>
             <!-- /.content-wrapper -->
         </div>
-        <!-- ./wrapper -->
+    <!-- ./wrapper -->
 
-        <!-- jQuery 2.2.3 -->
+    <!-- jQuery 2.2.3 -->
         <script src="{{ asset("bower/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js") }}"></script>
         <!-- jQuery UI 1.11.4 -->
         <script src="{{ asset("bower/jquery-ui/jquery-ui.min.js") }}"></script>
