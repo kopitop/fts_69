@@ -63,3 +63,20 @@ function showOption(key) {
 var rand = function() {
     return Math.random().toString(36).substr(2); // remove `0.`
 };
+
+function removeSuggestionDetail(id) {
+    $.ajax({
+        url: $('.hide').data("route"),
+        type: 'POST',
+        data: {
+            '_token': $('.hide').data("token"),
+            'id': id,
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.isSuccess) {
+                $('.suggestion-detail').html(data.suggestionDetail);
+            }
+        }
+    });
+}

@@ -24,14 +24,12 @@ class ExamRepository extends BaseRepository implements ExamRepositoryInterFace
     public function examIndex()
     {
         $sort = config('common.sort.descending');
-        $exams = Exam::with('subject', 'examStatus', 'examResult')->orderBy('created_at', $sort)->get();
+        $user = auth()->user();
+        $examId = ExamStatus::where('user_id', $user->id)->pluck('exam_id');
+        $exams = Exam::with('subject', 'examStatus', 'examResult')->orderBy('created_at', $sort)->whereIn('id', $examId)->get();
         $subjects = Subject::orderBy('created_at', $sort)->pluck('name', 'id');
-        $data = [
-            'exams' => $exams,
-            'subjects' => $subjects,
-        ];
 
-        return $data;
+        return compact('exams', 'subjects');
     }
 
     public function createExam($subjectId)
@@ -73,7 +71,6 @@ class ExamRepository extends BaseRepository implements ExamRepositoryInterFace
             DB::commit();
             $message = trans('messages.success.create_success', ['item' => 'exam']);
         } catch (Exception $ex) {
-            dd($ex);
             DB::rollBack();
             $message = trans('messages.error.create_exam_fail');
         }

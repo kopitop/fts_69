@@ -4,7 +4,7 @@
 @endsection
 @section('content')
     <div class="panel panel-primary">
-        <div class="panel-heading">{{ trans('users/suggestions/names.panel-heading') }}</div>
+        <div class="panel-heading">{{ trans('users/suggestions/names.panel_heading_add') }}</div>
         <div class="panel-body">
             <div class="hide" data-action="create"
                  data-option="{{ $data }}">
@@ -33,9 +33,7 @@
                 <div class="form-group option-content">
                 </div>
                 {{ Form::button(trans('names.button.button_submit'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
-                <a href="{{ route('suggestion.index') }}" class="btn btn-primary">
-                    {{ trans('names.button.button_back') }}
-                </a>
+                <a href="{{ route('suggestion.index') }}" class="btn btn-primary">{{ trans('names.button.button_back') }}</a>
             {{ Form::close() }}
         </div>
     </div>

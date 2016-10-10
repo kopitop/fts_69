@@ -38,6 +38,9 @@ Route::group(['namespace' => 'Account'], function () {
         'create', 'destroy', 'update'
     ]]);
     Route::resource('suggestion', 'SuggestionController');
+    Route::resource('suggestion-detail', 'SuggestionDetailController', ['only' => [
+        'store'
+    ]]);
 });
 
 /*

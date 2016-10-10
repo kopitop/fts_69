@@ -2,7 +2,9 @@
 
 return [
     'title' => 'Suggestion',
-    'panel-heading' => 'Add a new question',
+    'panel_heading_add' => 'Add a new suggestion',
+    'panel_heading_edit' => 'Edit a suggestion',
+    'panel_heading_show' => 'Display a suggestion',
     'label' => [
         'head_table' => 'List Of Suggestions',
         'created_at' => 'Created Date',

@@ -4,6 +4,7 @@ namespace App\Repositories\Suggestion;
 
 use App\Models\Question;
 use App\Models\QuestionAnswer;
+use App\Models\Subject;
 use App\Models\Suggestion;
 use App\Models\SuggestionDetail;
 use App\Repositories\BaseRepository;
@@ -85,17 +86,17 @@ class SuggestionRepository extends BaseRepository implements SuggestionRepositor
 
     public function index($userId)
     {
-        return Suggestion::with('suggestionDetails', 'subject')->where('user_id', $userId)->get();
+        return Suggestion::with('suggestionDetails', 'subject')->orderBy('created_at', config('common.sort.sort_descending'))->where('user_id', $userId)->get();
     }
 
     public function store($input)
     {
         $type = $input['type'];
-        $content_text = $input['content_text'];
-        $content_multiple_choice = $input['content_multiple_choice'];
-        $correct_multiple_choice = $input['correct_multiple_choice'];
-        $content_single_choice = $input['content_single_choice'];
-        $correct_single_choice = $input['correct_single_choice'];
+        $contentText = $input['content_text'];
+        $contentMultipleChoice = $input['content_multiple_choice'];
+        $correctMultipleChoice = $input['correct_multiple_choice'];
+        $contentSingleChoice = $input['content_single_choice'];
+        $correctSingleChoice = $input['correct_single_choice'];
         $config = config('common.question.type_question');
         $dataSuggestionDetail = null;
 
@@ -110,7 +111,7 @@ class SuggestionRepository extends BaseRepository implements SuggestionRepositor
                 'status' => config('common.suggestion.status.waiting'),
             ]);
             if ($type == $config['text']) {
-                foreach ($content_text as $value) {
+                foreach ($contentText as $value) {
                     $dataSuggestionDetail[] = [
                         'suggestion_id' => $dataSuggestion->id,
                         'option' => $value,
@@ -118,21 +119,20 @@ class SuggestionRepository extends BaseRepository implements SuggestionRepositor
                     ];
                 }
             } elseif ($type == $config['multiple_choice']) {
-                foreach ($content_multiple_choice as $key => $value) {
+                foreach ($contentMultipleChoice as $key => $value) {
                     $dataSuggestionDetail[] = [
                         'suggestion_id' => $dataSuggestion->id,
                         'option' => $value,
-                        'correct' => array_key_exists($key, $correct_multiple_choice)
-                            ? $correct_multiple_choice[$key]
-                            : config('common.suggestion_detail.correct.false'),
+                        'correct' => array_key_exists($key, $correctMultipleChoice)
+                            ? $correctMultipleChoice[$key] : config('common.suggestion_detail.correct.false'),
                     ];
                 }
             } else {
-                foreach ($content_single_choice as $key => $value) {
+                foreach ($contentSingleChoice as $key => $value) {
                     $dataSuggestionDetail[] = [
                         'suggestion_id' => $dataSuggestion->id,
                         'option' => $value,
-                        'correct' => (str_contains($correct_single_choice, $key))
+                        'correct' => (str_contains($correctSingleChoice, $key))
                             ? config('common.suggestion_detail.correct.true')
                             : config('common.suggestion_detail.correct.false'),
                     ];
@@ -149,4 +149,178 @@ class SuggestionRepository extends BaseRepository implements SuggestionRepositor
 
         return $message;
     }
+
+    public function userCreate()
+    {
+        $trans = trans('admins/questions/names.label_form');
+        $config = config('common.question.type_question');
+        $subjects = Subject::orderBy('created_at', config('common.sort.descending'))->pluck('name', 'id');
+        $types = [
+            $config['single_choice'] => $trans['single_choice'],
+            $config['multiple_choice'] => $trans['multiple_choice'],
+            $config['text'] => $trans['text'],
+        ];
+        $data = json_encode([
+            'key' => [
+                'single' => $config['single_choice'],
+                'multiple' => $config['multiple_choice'],
+                'text' => $config['text'],
+            ],
+            'view' => [
+                'text' => view('layout.option-text')->render(),
+                'multiple' => view('layout.option-multiple-choice')->render(),
+                'single' => view('layout.option-single-choice')->render(),
+            ],
+            'oldInput' => session("_old_input"),
+        ]);
+
+        return compact('subjects', 'types', 'data');
+    }
+
+    public function edit($id)
+    {
+        $suggestion = Suggestion::with('subject', 'suggestionDetails')->find($id);
+        $config = config('common.question.type_question');
+        $trans = trans('admins/questions/names.label_form');
+        $type = $config['single_choice'];
+
+        switch ($suggestion->type) {
+            case $trans['multiple_choice']:
+                $type = $config['multiple_choice'];
+                break;
+            case $trans['text']:
+                $type = $config['text'];
+                break;
+        }
+        $dataSystem =  $this->userCreate();
+        $dataRtn = [
+            'subjects' => $dataSystem['subjects'],
+            'types' => $dataSystem['types'],
+            'data' => $dataSystem['data'],
+            'suggestion' => $suggestion,
+            'type' => $type
+        ];
+
+        return $dataRtn;
+    }
+
+    public function update($inputs, $id)
+    {
+        $suggestion = Suggestion::findOrFail($id);
+        try {
+            DB::beginTransaction();
+            $type = $inputs['type'];
+            $correctMultipleChoice = $inputs['correct_multiple_choice'];
+            $correctSingleChoice = $inputs['correct_single_choice'];
+            $suggestion->update([
+                'subject_id' => $inputs['subject_id'],
+                'content' => $inputs['content'],
+            ]);
+
+            foreach ($inputs['content_option'] as $suggestionDetailId=>$value) {
+                $data['option'] = $value;
+                if (array_key_exists($suggestionDetailId, $inputs['correct_option'])) {
+                    $data['correct'] = $inputs['correct_option'][$suggestionDetailId];
+                } else {
+                    $data['correct'] = config('common.suggestion_detail.correct.false');
+                }
+
+                SuggestionDetail::where('id', $suggestionDetailId)->update($data);
+            }
+
+            if ($type == config('common.question.type_question.text')) {
+                if (count($inputs['content_text'])) {
+                    foreach ($inputs['content_text'] as $value) {
+                        $dataInsert[] = [
+                            'suggestion_id' => $id,
+                            'option' => $value,
+                            'correct' => config('common.suggestion_detail.correct.false'),
+                        ];
+                    }
+                }
+            } elseif ($type == config('common.question.type_question.multiple_choice')) {
+                if (count($inputs['content_multiple_choice'])) {
+                    foreach ($inputs['content_multiple_choice'] as $key => $value) {
+                        if (is_null($correctMultipleChoice)) {
+                            $dataInsert[] = [
+                                'suggestion_id' => $id,
+                                'option' => $value,
+                                'correct' => config('common.suggestion_detail.correct.false'),
+                            ];
+                        } else {
+                            $dataInsert[] = [
+                                'suggestion_id' => $id,
+                                'option' => $value,
+                                'correct' => array_key_exists($key, $correctMultipleChoice)
+                                    ? $correctMultipleChoice[$key] : config('common.suggestion_detail.correct.false'),
+                            ];
+                        }
+                    }
+                }
+            } else {
+                if (count($inputs['content_single_choice'])) {
+                    foreach ($inputs['content_single_choice'] as $key => $value) {
+                        if (is_null($correctSingleChoice)) {
+                            $dataInsert[] = [
+                                'suggestion_id' => $id,
+                                'option' => $value,
+                                'correct' => config('common.suggestion_detail.correct.false'),
+                            ];
+                        } else {
+                            $dataInsert[] = [
+                                'suggestion_id' => $id,
+                                'option' => $value,
+                                'correct' => (str_contains($correctSingleChoice, $key))
+                                    ? config('common.suggestion_detail.correct.true')
+                                    : config('common.suggestion_detail.correct.false'),
+                            ];
+                        }
+
+                    }
+                }
+            }
+
+            if (isset($dataInsert)) {
+                SuggestionDetail::insert($dataInsert);
+            }
+
+            DB::commit();
+            $message = trans('messages.success.update_success', ['item' => 'suggestion']);
+        } catch (Exception $ex) {
+            DB::rollBack();
+            $message = trans('messages.error.update_error', ['item' => 'suggestion']);
+        }
+
+        return $message;
+    }
+
+    public function deleteSuggestionDetail($id)
+    {
+        $suggestionDetail = SuggestionDetail::find($id);
+        $suggestionId = $suggestionDetail->suggestion_id;
+        $suggestionDetail->delete();
+        $suggestion = Suggestion::with('suggestionDetails')->find($suggestionId);
+        $config = config('common.question.type_question');
+        $trans = trans('admins/questions/names.label_form');
+        $type = $config['single_choice'];
+
+        switch ($suggestion->type) {
+            case $trans['multiple_choice']:
+                $type = $config['multiple_choice'];
+                break;
+            case $trans['text']:
+                $type = $config['text'];
+                break;
+        }
+        $data = json_encode([
+            'isSuccess' => true,
+            'suggestionDetail' => view('layout.suggestion-detail', [
+                'suggestion' => $suggestion,
+                'type' => $type,
+            ])->render(),
+        ]);
+
+        return $data;
+    }
+
 }
